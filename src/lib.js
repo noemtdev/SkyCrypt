@@ -10,6 +10,7 @@ import nbt from "prismarine-nbt";
 import { fileURLToPath } from "url";
 import util from "util";
 import { v4 } from "uuid";
+import fetch from "node-fetch";
 
 import * as constants from "./constants.js";
 import credentials from "./credentials.js";
@@ -1472,6 +1473,21 @@ async function getLevels(userProfile, hypixelProfile, levelCaps, profileMembers)
   ) {
     let average_level_no_progress = 0;
 
+    let skill_xps = {
+      taming: userProfile.experience_skill_taming || 0,
+      farming: userProfile.experience_skill_farming || 0,
+      mining: userProfile.experience_skill_mining || 0,
+      combat: userProfile.experience_skill_combat || 0,
+      foraging: userProfile.experience_skill_foraging || 0,
+      fishing: userProfile.experience_skill_fishing || 0,
+      enchanting: userProfile.experience_skill_enchanting || 0,
+      alchemy: userProfile.experience_skill_alchemy || 0,
+      carpentry: userProfile.experience_skill_carpentry || 0,
+      runecrafting: userProfile.experience_skill_runecrafting || 0,
+      social: userProfile.experience_skill_social || 0,
+    }
+    output.skill_xps = skill_xps;
+
     skillLevels = {
       taming: getLevelByXp(userProfile.experience_skill_taming, { skill: "taming" }),
       farming: getLevelByXp(userProfile.experience_skill_farming, {
@@ -1537,6 +1553,19 @@ async function getLevels(userProfile, hypixelProfile, levelCaps, profileMembers)
     };
 
     output.levels = {};
+
+    let outputskillLevels = {
+      farming: hypixelProfile.achievements.skyblock_harvester || 0,
+      mining: hypixelProfile.achievements.skyblock_excavator || 0,
+      combat: hypixelProfile.achievements.skyblock_combat || 0,
+      foraging: hypixelProfile.achievements.skyblock_gatherer || 0,
+      fishing: hypixelProfile.achievements.skyblock_angler || 0,
+      enchanting: hypixelProfile.achievements.skyblock_augmentation || 0,
+      alchemy: hypixelProfile.achievements.skyblock_concoctor || 0,
+      taming: hypixelProfile.achievements.skyblock_domesticator || 0,
+      carpentry: 0,
+    };
+    output.skill_levels = outputskillLevels;
 
     let skillsAmount = 0;
 
@@ -1619,7 +1648,7 @@ export async function getStats(
     farming: constants.DEFAULT_SKILL_CAPS.farming + (userProfile.jacob2?.perks?.farming_level_cap || 0),
   };
 
-  const { levels, average_level, average_level_no_progress, total_skill_xp, average_level_rank } = await getLevels(
+  const { levels, average_level, average_level_no_progress, total_skill_xp, average_level_rank, skill_levels, skill_xps} = await getLevels(
     userProfile,
     hypixelProfile,
     levelCaps,
@@ -2430,6 +2459,24 @@ export async function getStats(
     output.bank,
     { cache: true, onlyNetworth: true }
   );
+
+
+  const request_data = {
+    dungeons: JSON.stringify(output.dungeons),
+    slayers: JSON.stringify(output.slayers),
+    skills: {
+      levels: JSON.stringify(skill_levels),
+      xp: JSON.stringify(skill_xps),
+    },
+    mining: JSON.stringify(output.mining),
+    networth: JSON.stringify(output.networth)
+  }
+
+  const res = await fetch("https://api.noms.tech/api/value/calculate", {
+    method: "POST",
+    body: JSON.stringify(request_data)}).then(res => res.json());
+
+  output.value = res
 
   /*
     century cake effects

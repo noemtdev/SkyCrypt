@@ -928,7 +928,9 @@ const metaDescription = getMetaDescription()
               </span><br/>
             <% } %>
           <% } %>
+
           <br/>
+
           <span class='stat-name'>Unsoulbound Networth: </span>
           <span class='stat-value'>
           <%= helper.formatNumber(parseFloat(calculated.networth.unsoulboundNetworth.toFixed(2))) %></span>
@@ -942,7 +944,43 @@ const metaDescription = getMetaDescription()
             <span class="stat-value"><%= helper.formatNumber(parseFloat(Math.round(calculated.networth.networth))) %></span></span>
         </div>
         <% } %>
+
+        <div class="additional-stat">
+          <span data-tippy-content="
+          <span class='stat-name'>Value</span><br/>
+          <span class='stat-info'>Value calculations by block game bot</span>
+          <br/><br/>
+          <span class='stat-name'>Networth</span><br/>
+          <span class='stat-name'>Unsoulbound: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.networth.toFixed(2)))%></span></span><br/><br/>
+
+          <span class='stat-name'>Skills</span><br/>
+          <span class='stat-name'>Farming: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.farming.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Mining: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.mining.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Combat: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.combat.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Foraging: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.foraging.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Fishing: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.fishing.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Alchemy: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.alchemy.toFixed(2)))%></span></span><br>
+          <span class='stat-name'>Enchanting: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.enchanting.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Taming: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.skills.taming.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Dungeons: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.dungeons.toFixed(2)))%></span></span><br><br/>
+
+          <span class='stat-name'>Slayers</span><br/>
+          <span class='stat-name'>Zombie: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.slayer.zombie).toFixed(2))%></span></span><br/>
+          <span class='stat-name'>Spider: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.slayer.spider.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Wolf: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.slayer.wolf.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Enderman: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.slayer.enderman.toFixed(2)))%></span></span><br/>
+          <span class='stat-name'>Blaze: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.slayer.blaze.toFixed(2)))%></span></span><br/><br/>
+
+          <span class='stat-name'>Mining</span><br/>
+          <span class='stat-name'>HOTM: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.mining.hotm.toFixed(2)))%></span></span><br>
+          <span class='stat-name'>Mithril Powder: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.mining.powder.mithril.toFixed(2)))%></span></span><br>
+          <span class='stat-name'>Gemstone Powder: <span class='stat-value'>$<%= helper.formatNumber(parseFloat(calculated.value.mining.powder.gemstone.toFixed(2)))%></span>">
+          <span class='stat-name'>Value: </span>
+          <span class='stat-value'>$<%=helper.formatNumber(parseFloat(calculated.value.total.toFixed(2)))%></span></span></div>
+
       </div>
+
+
       <div id="skill_levels_container">
         <% if (calculated.skyblock_level.xp !== 0 && calculated.skyblock_level.level !== 0) {%>
         <div class="skill-bars">
@@ -1463,13 +1501,6 @@ const metaDescription = getMetaDescription()
                   <div class="inventory-tab-icon item-icon custom-icon" style="background-image: url(/head/4cb3acdc11ca747bf710e59f4c8e9b3d949fdd364c6869831ca878f0763d1787)"></div>
                   <div class="inventory-tab-name">Quiver</div>
                 </button>
-                <% } %>
-
-                <% if (calculated.museum !== undefined) { %>
-                  <button class="inventory-tab" data-inventory-type="museum">
-                    <div class="inventory-tab-icon item-icon custom-icon" style="background-image: url(/head/438cf3f8e54afc3b3f91d20a49f324dca1486007fe545399055524c17941f4dc)"></div>
-                    <div class="inventory-tab-name">Museum</div>
-                  </button>
                 <% } %>
               </div>
             </div>
@@ -2662,6 +2693,7 @@ const metaDescription = getMetaDescription()
           </div>
         </div>
       <% } %>
+
 
       <% if(Object.keys(calculated.misc).length > 0){ %>
       <div class="stat-container stat-misc">
